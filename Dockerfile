@@ -65,5 +65,5 @@ RUN chmod -v +x /etc/my_init.d/*.sh
 
 EXPOSE 80 443 22
 
-# Clenn up
+# Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

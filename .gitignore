@@ -1,5 +1,3 @@
 .DS_Store
 ._*
 .vagrant
-
-/conf/ssh/id_rsa.pub

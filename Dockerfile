@@ -56,7 +56,6 @@ COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
-COPY ./conf/ssh/id_rsa.pub /root/.ssh/authorized_keys
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

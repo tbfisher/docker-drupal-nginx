@@ -45,10 +45,15 @@ RUN apt-get update && \
         openssh-server
 
 # Drush
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        mysql-client
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer global require drush/drush:7 --prefer-dist
 RUN ln -sf /root/.composer/vendor/bin/drush.php /usr/local/bin/drush
+RUN drush -y dl \
+    drush_sql_sync_pipe
 
 # Configure
 COPY ./conf/php5/fpm/php.ini /etc/php5/fpm/php.ini

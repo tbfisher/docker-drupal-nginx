@@ -56,6 +56,9 @@ RUN drush -y dl \
     drush_sql_sync_pipe
 
 # Configure
+RUN mkdir /var/www_files && \
+    chgrp www-data /var/www_files && \
+    chmod 775 /var/www_files
 COPY ./conf/php5/fpm/php.ini /etc/php5/fpm/php.ini
 COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default

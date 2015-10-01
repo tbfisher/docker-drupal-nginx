@@ -1,7 +1,8 @@
 # http://phusion.github.io/baseimage-docker/
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-#FROM phusion/baseimage:<VERSION>
-FROM phusion/baseimage
+FROM phusion/baseimage:0.9.17
+
+MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
 RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8

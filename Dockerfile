@@ -12,27 +12,26 @@ ENV LC_ALL     en_US.UTF-8
 CMD ["/sbin/my_init"]
 
 # PHP cli/fpm
-RUN add-apt-repository ppa:ondrej/php5-5.6 && \
+RUN add-apt-repository ppa:ondrej/php-7.0 && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-pear        \
-        php5-cli        \
-        php5-common     \
-        php5-curl       \
-        php5-fpm        \
-        php5-gd         \
-        php5-imagick    \
-        php5-imap       \
-        php5-intl       \
-        php5-json       \
-        php5-ldap       \
-        php5-mcrypt     \
-        php5-mysql      \
-        php5-redis      \
-        php5-sqlite     \
-        php5-tidy       \
-        php5-xdebug
-RUN php5enmod mcrypt
+        php-cli        \
+        php-common     \
+        php-curl       \
+        php-fpm        \
+        php-gd         \
+        php-imap       \
+        php-intl       \
+        php-json       \
+        php-ldap       \
+        php-mysql      \
+        php-tidy
+        # php-imagick
+        # php-mcrypt
+        # php-redis
+        # php-sqlite
+        # php-xdebug
+# RUN php5enmod mcrypt
 
 # NGNIX
 RUN apt-get update && \
@@ -61,8 +60,8 @@ RUN drush -y dl \
 RUN mkdir /var/www_files && \
     chgrp www-data /var/www_files && \
     chmod 775 /var/www_files
-COPY ./conf/php5/fpm/php.ini /etc/php5/fpm/php.ini
-COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
+COPY ./conf/php/fpm/php.ini /etc/php/7.0/fpm/php.ini
+COPY ./conf/php/cli/php.ini /etc/php/7.0/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config

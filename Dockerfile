@@ -12,7 +12,7 @@ ENV LC_ALL     en_US.UTF-8
 CMD ["/sbin/my_init"]
 
 # PHP cli/fpm
-RUN add-apt-repository ppa:ondrej/php5 && \
+RUN add-apt-repository ppa:ondrej/php5-5.6 && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear        \

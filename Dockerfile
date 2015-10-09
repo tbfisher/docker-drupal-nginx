@@ -27,6 +27,7 @@ RUN add-apt-repository ppa:ondrej/php5 && \
         php5-json       \
         php5-ldap       \
         php5-mcrypt     \
+        php5-memcache   \
         php5-mysql      \
         php5-redis      \
         php5-sqlite     \

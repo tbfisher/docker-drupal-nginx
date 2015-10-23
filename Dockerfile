@@ -47,15 +47,19 @@ RUN apt-get update && \
         openssh-server
 
 # Drush
+ENV DRUSH_VERSION='7.1.0'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client
+        mysql-client    \
+        git
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer global require drush/drush:7 --prefer-dist
-RUN ln -sf /root/.composer/vendor/bin/drush.php /usr/local/bin/drush
-RUN drush -y dl \
-    drush_sql_sync_pipe
+RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
+RUN cd /usr/local/src/drush && composer install
+RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush
+RUN drush -y dl --destination=/usr/local/src/drush/commands registry_rebuild
+COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
+RUN chmod +x /usr/local/bin/drush-remote
 
 # Configure
 RUN mkdir /var/www_files && \

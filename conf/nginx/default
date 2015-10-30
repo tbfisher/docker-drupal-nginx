@@ -30,8 +30,9 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         include fastcgi_params;
-        #fastcgi_param SCRIPT_FILENAME $request_filename;
-        #fastcgi_param HTTPS off;
+        fastcgi_param SERVER_NAME $host;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+        fastcgi_param HTTPS off;
     }
     location ~ ^/sites/.*/files/styles/ {
         try_files $uri @rewrite;
@@ -78,8 +79,9 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         include fastcgi_params;
-        #fastcgi_param SCRIPT_FILENAME $request_filename;
-        #fastcgi_param HTTPS on;
+        fastcgi_param SERVER_NAME $host;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+        fastcgi_param HTTPS on;
     }
     location ~ ^/sites/.*/files/styles/ {
         try_files $uri @rewrite;

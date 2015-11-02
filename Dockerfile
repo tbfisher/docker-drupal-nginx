@@ -36,6 +36,7 @@ RUN add-apt-repository ppa:ondrej/php5 && \
         php5-xhprof
 RUN php5enmod mcrypt
 RUN php5enmod xhprof
+RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
 # NGNIX
 RUN apt-get update && \

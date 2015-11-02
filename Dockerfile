@@ -32,8 +32,11 @@ RUN add-apt-repository ppa:ondrej/php5-5.6 && \
         php5-redis      \
         php5-sqlite     \
         php5-tidy       \
-        php5-xdebug
+        php5-xdebug     \
+        php5-xhprof
 RUN php5enmod mcrypt
+RUN php5enmod xhprof
+RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
 # NGNIX
 RUN apt-get update && \

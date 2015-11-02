@@ -32,7 +32,9 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         # php-redis
         # php-sqlite
         # php-xdebug
-# RUN php5enmod mcrypt
+        # php-xhprof
+# RUN phpenmod mcrypt
+# RUN phpenmod xhprof
 
 # NGNIX
 RUN apt-get update && \

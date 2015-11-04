@@ -70,6 +70,7 @@ RUN mkdir /var/www_files && \
     chgrp www-data /var/www_files && \
     chmod 775 /var/www_files
 COPY ./conf/php/fpm/php.ini /etc/php/7.0/fpm/php.ini
+COPY ./conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 COPY ./conf/php/cli/php.ini /etc/php/7.0/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf

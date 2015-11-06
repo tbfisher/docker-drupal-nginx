@@ -36,6 +36,10 @@ RUN php5enmod mcrypt
 RUN php5enmod xhprof
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git
+
 # PHP-FPM
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -54,13 +58,12 @@ RUN apt-get update && \
         openssh-server
 
 # Drush
-ENV DRUSH_VERSION='7.1.0'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client    \
-        git
+        mysql-client
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
+ENV DRUSH_VERSION='7.1.0'
 RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
 RUN cd /usr/local/src/drush && composer install
 RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush

@@ -22,7 +22,6 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         php-gd         \
         php-imap       \
         php-intl       \
-        php-json       \
         php-ldap       \
         php-mysql      \
         php-tidy

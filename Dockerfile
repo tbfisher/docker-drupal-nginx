@@ -30,7 +30,6 @@ RUN apt-get update && \
         php5-redis      \
         php5-sqlite     \
         php5-tidy       \
-        php5-xdebug     \
         php5-xhprof
 RUN php5enmod mcrypt
 RUN php5enmod xhprof
@@ -38,7 +37,20 @@ RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
+        git         \
+        php5-dev
+
+# Xdebug
+ENV XDEBUG_VERSION='XDEBUG_2_3_3'
+RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
+RUN cd /usr/local/src/xdebug && \
+    phpize      && \
+    ./configure && \
+    make clean  && \
+    make        && \
+    make install
+COPY ./conf/php5/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+RUN php5enmod xdebug
 
 # PHP-FPM
 RUN apt-get update && \

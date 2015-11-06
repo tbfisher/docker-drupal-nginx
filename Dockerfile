@@ -34,6 +34,10 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
 # RUN phpenmod mcrypt
 # RUN phpenmod xhprof
 
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git
+
 # PHP-FPM
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -52,16 +56,13 @@ RUN apt-get update && \
         openssh-server
 
 # Drush
-ENV DRUSH_VERSION='7.1.0'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client    \
-        git
+        mysql-client
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
+ENV DRUSH_VERSION='8.0.0-rc3'
 RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
-# @see https://github.com/drush-ops/drush/issues/1409#issuecomment-127461859
-RUN cd /usr/local/src/drush && composer require boris:1.0.8 && composer update
 RUN cd /usr/local/src/drush && composer install
 RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush
 RUN drush -y dl --destination=/usr/local/src/drush/commands registry_rebuild

@@ -11,7 +11,7 @@ ENV LC_ALL     en_US.UTF-8
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-# PHP cli/fpm
+# PHP
 RUN add-apt-repository ppa:ondrej/php5-5.6 && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -19,7 +19,6 @@ RUN add-apt-repository ppa:ondrej/php5-5.6 && \
         php5-cli        \
         php5-common     \
         php5-curl       \
-        php5-fpm        \
         php5-gd         \
         php5-imagick    \
         php5-imap       \
@@ -31,12 +30,38 @@ RUN add-apt-repository ppa:ondrej/php5-5.6 && \
         php5-mysql      \
         php5-redis      \
         php5-sqlite     \
-        php5-tidy       \
-        php5-xdebug
+        php5-tidy
         # php5-xhprof
-RUN php5enmod mcrypt
-# RUN php5enmod xhprof
+RUN php5enmod \
+    mcrypt
+    # xhprof
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git         \
+        php5-dev
+
+# Xdebug
+ENV XDEBUG_VERSION='XDEBUG_2_3_3'
+RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
+RUN cd /usr/local/src/xdebug && \
+    phpize      && \
+    ./configure && \
+    make clean  && \
+    make        && \
+    make install
+COPY ./conf/php5/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+RUN php5enmod xdebug
+
+# PHP-FPM
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        php5-fpm
+RUN php5enmod -s fpm \
+    mcrypt \
+    xhprof \
+    xdebug
 
 # NGNIX
 RUN apt-get update && \
@@ -51,13 +76,12 @@ RUN apt-get update && \
         openssh-server
 
 # Drush
-ENV DRUSH_VERSION='7.1.0'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client    \
-        git
+        mysql-client
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
+ENV DRUSH_VERSION='7.1.0'
 RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
 RUN cd /usr/local/src/drush && composer install
 RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush

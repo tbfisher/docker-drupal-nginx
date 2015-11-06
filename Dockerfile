@@ -15,15 +15,15 @@ CMD ["/sbin/my_init"]
 RUN add-apt-repository ppa:ondrej/php-7.0 && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-cli        \
-        php-common     \
-        php-curl       \
-        php-fpm        \
-        php-gd         \
-        php-imap       \
-        php-intl       \
-        php-ldap       \
-        php-mysql      \
+        php-cli         \
+        php-common      \
+        php-curl        \
+        php-fpm         \
+        php-gd          \
+        php-imap        \
+        php-intl        \
+        php-ldap        \
+        php-mysql       \
         php-tidy
         # php-imagick
         # php-memcache

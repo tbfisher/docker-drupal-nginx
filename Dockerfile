@@ -24,12 +24,12 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         php-intl        \
         php-ldap        \
         php-mysql       \
+        php-sqlite3     \
         php-tidy
         # php-imagick
         # php-memcache
         # php-mcrypt
         # php-redis
-        # php-sqlite
         # php-xdebug
         # php-xhprof
 # RUN phpenmod mcrypt

@@ -11,14 +11,13 @@ ENV LC_ALL     en_US.UTF-8
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-# PHP cli/fpm
+# PHP
 RUN add-apt-repository ppa:ondrej/php-7.0 && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-cli         \
         php-common      \
         php-curl        \
-        php-fpm         \
         php-gd          \
         php-imap        \
         php-intl        \
@@ -34,6 +33,11 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         # php-xhprof
 # RUN phpenmod mcrypt
 # RUN phpenmod xhprof
+
+# PHP-FPM
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        php-fpm
 
 # NGNIX
 RUN apt-get update && \

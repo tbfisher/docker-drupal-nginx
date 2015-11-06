@@ -29,14 +29,25 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         # php-memcache
         # php-mcrypt
         # php-redis
-        # php-xdebug
         # php-xhprof
 # RUN phpenmod mcrypt
 # RUN phpenmod xhprof
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
+        git         \
+        php-dev
+
+# Xdebug
+ENV XDEBUG_VERSION='XDEBUG_2_4_0beta1'
+RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
+RUN cd /usr/local/src/xdebug && \
+    phpize      && \
+    ./configure && \
+    make clean  && \
+    make        && \
+    make install
+COPY ./conf/php/mods-available/xdebug.ini /etc/php/mods-available/xdebug.ini
 
 # PHP-FPM
 RUN apt-get update && \
@@ -79,6 +90,8 @@ COPY ./conf/php/cli/php.ini /etc/php/7.0/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
+RUN ln -s /etc/php/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini && \
+    ln -s /etc/php/mods-available/xdebug.ini /etc/php/7.0/fpm/conf.d/20-xdebug.ini
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

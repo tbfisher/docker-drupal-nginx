@@ -11,14 +11,13 @@ ENV LC_ALL     en_US.UTF-8
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
-# PHP cli/fpm
+# PHP
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear        \
         php5-cli        \
         php5-common     \
         php5-curl       \
-        php5-fpm        \
         php5-gd         \
         php5-imagick    \
         php5-imap       \
@@ -36,6 +35,11 @@ RUN apt-get update && \
 RUN php5enmod mcrypt
 RUN php5enmod xhprof
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
+
+# PHP-FPM
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        php-fpm
 
 # NGNIX
 RUN apt-get update && \

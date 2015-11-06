@@ -31,8 +31,9 @@ RUN apt-get update && \
         php5-sqlite     \
         php5-tidy       \
         php5-xhprof
-RUN php5enmod mcrypt
-RUN php5enmod xhprof
+RUN php5enmod \
+    mcrypt \
+    xhprof
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
 RUN apt-get update && \
@@ -55,7 +56,11 @@ RUN php5enmod xdebug
 # PHP-FPM
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-fpm
+        php5-fpm
+RUN php5enmod -s fpm \
+    mcrypt \
+    xhprof \
+    xdebug
 
 # NGNIX
 RUN apt-get update && \

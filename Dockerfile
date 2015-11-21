@@ -40,7 +40,7 @@ RUN apt-get update && \
         php-dev
 
 # Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_4_0beta1'
+ENV XDEBUG_VERSION='XDEBUG_2_4_0RC1'
 RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
 RUN cd /usr/local/src/xdebug && \
     phpize      && \

@@ -88,6 +88,13 @@ RUN drush -y dl --destination=/usr/local/src/drush/commands registry_rebuild
 COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
 RUN chmod +x /usr/local/bin/drush-remote
 
+# sSMTP
+# note php is configured to use ssmtp, which is configured to send to mail:1025,
+# which is standard configuration for a mailhog/mailhog image with hostname mail.
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        ssmtp
+
 # Configure
 RUN mkdir /var/www_files && \
     chgrp www-data /var/www_files && \
@@ -98,6 +105,7 @@ COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
+COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

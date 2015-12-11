@@ -71,6 +71,7 @@ RUN service nginx stop
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         openssh-server
+RUN dpkg-reconfigure openssh-server
 
 # Drush
 RUN apt-get update && \

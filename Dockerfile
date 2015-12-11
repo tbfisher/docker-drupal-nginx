@@ -1,6 +1,6 @@
 # http://phusion.github.io/baseimage-docker/
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-FROM phusion/baseimage:0.9.17
+FROM phusion/baseimage:0.9.18
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 

@@ -40,7 +40,7 @@ RUN apt-get update && \
         php-dev
 
 # Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_4_0RC2'
+ENV XDEBUG_VERSION='XDEBUG_2_4_0RC3'
 RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
 RUN cd /usr/local/src/xdebug && \
     phpize      && \
@@ -48,8 +48,8 @@ RUN cd /usr/local/src/xdebug && \
     make clean  && \
     make        && \
     make install
-COPY ./conf/php/mods-available/xdebug.ini /etc/php/mods-available/xdebug.ini
-RUN ln -s /etc/php/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini
+COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
+RUN ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini
 
 # PHP-FPM
 RUN apt-get update && \

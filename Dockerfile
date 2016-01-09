@@ -83,7 +83,6 @@ ENV DRUSH_VERSION='8.0.2'
 RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
 RUN cd /usr/local/src/drush && composer install
 RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush
-RUN drush -y dl --destination=/usr/local/src/drush/commands registry_rebuild
 COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
 RUN chmod +x /usr/local/bin/drush-remote
 

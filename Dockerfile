@@ -82,7 +82,7 @@ RUN apt-get update && \
         mysql-client
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
-ENV DRUSH_VERSION='8.0.2'
+ENV DRUSH_VERSION='8.0.3'
 RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
 RUN cd /usr/local/src/drush && composer install
 RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush

@@ -18,6 +18,8 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         php-cli         \
         php-common      \
         php-curl        \
+        php-dev         \
+        php-fpm         \
         php-gd          \
         php-imap        \
         php-intl        \
@@ -30,14 +32,10 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         # php-mcrypt
         # php-redis
         # php-xhprof
-# RUN php5enmod \
-#     mcrypt \
-#     xhprof
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git         \
-        php-dev
+        git
 
 # Xdebug
 ENV XDEBUG_VERSION='XDEBUG_2_4_0RC4'
@@ -49,16 +47,6 @@ RUN cd /usr/local/src/xdebug && \
     make        && \
     make install
 COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
-RUN ln -s /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/cli/conf.d/20-xdebug.ini
-
-# PHP-FPM
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-fpm
-# RUN php5enmod -s fpm \
-#     mcrypt \
-#     xhprof
-RUN ln -s /etc/php/mods-available/xdebug.ini /etc/php/7.0/fpm/conf.d/20-xdebug.ini
 
 # NGNIX
 RUN apt-get update && \
@@ -110,6 +98,9 @@ COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
+RUN phpenmod \
+    fpm    \
+    xdebug
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

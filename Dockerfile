@@ -12,7 +12,7 @@ ENV LC_ALL     en_US.UTF-8
 CMD ["/sbin/my_init"]
 
 # PHP
-RUN add-apt-repository ppa:ondrej/php-7.0 && \
+RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-cli         \
@@ -21,16 +21,17 @@ RUN add-apt-repository ppa:ondrej/php-7.0 && \
         php-dev         \
         php-fpm         \
         php-gd          \
+        php-imagick     \
         php-imap        \
         php-intl        \
         php-ldap        \
+        php-mcrypt      \
+        php-memcached   \
         php-mysql       \
+        php-redis       \
         php-sqlite3     \
         php-tidy
-        # php-imagick
         # php-memcache
-        # php-mcrypt
-        # php-redis
         # php-xhprof
 
 RUN apt-get update && \
@@ -100,7 +101,9 @@ COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 RUN phpenmod \
     fpm    \
-    xdebug
+    mcrypt \
+    xdebug \
+    xhprof
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

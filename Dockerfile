@@ -90,7 +90,7 @@ COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
 RUN chmod +x /usr/local/bin/drush-remote
 
 # Drupal Console.
-ENV DRUPALCONSOLE_VERSION='0.10.9'
+ENV DRUPALCONSOLE_VERSION='0.10.11'
 RUN git clone -b $DRUPALCONSOLE_VERSION --depth 1 https://github.com/hechoendrupal/DrupalConsole.git /usr/local/src/drupalconsole
 RUN cd /usr/local/src/drupalconsole && composer install
 RUN ln -s /usr/local/src/drupalconsole/bin/console /usr/local/bin/drupal

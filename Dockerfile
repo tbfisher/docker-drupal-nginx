@@ -18,6 +18,8 @@ RUN apt-get update && \
         php5-cli        \
         php5-common     \
         php5-curl       \
+        php5-dev        \
+        php5-fpm        \
         php5-gd         \
         php5-imagick    \
         php5-imap       \
@@ -31,15 +33,10 @@ RUN apt-get update && \
         php5-sqlite     \
         php5-tidy       \
         php5-xhprof
-RUN php5enmod \
-    mcrypt \
-    xhprof
-RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git         \
-        php5-dev
+        git
 
 # Xdebug
 ENV XDEBUG_VERSION='XDEBUG_2_3_3'
@@ -51,16 +48,6 @@ RUN cd /usr/local/src/xdebug && \
     make        && \
     make install
 COPY ./conf/php5/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
-RUN php5enmod xdebug
-
-# PHP-FPM
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php5-fpm
-RUN php5enmod -s fpm \
-    mcrypt \
-    xhprof \
-    xdebug
 
 # NGNIX
 RUN apt-get update && \
@@ -112,6 +99,13 @@ COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
+# prevent php warnings
+RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
+RUN php5enmod \
+    fpm    \
+    mcrypt \
+    xdebug \
+    xhprof
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

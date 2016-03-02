@@ -2,8 +2,6 @@
 
 Nginx and PHP-fpm configured for Drupal, with
 
--   [Drush](https://github.com/drush-ops/drush)
--   [Drupal Console](https://drupalconsole.com/)
 -   [Xdebug](https://xdebug.org/)
 -   [Mailhog](https://github.com/mailhog/MailHog) support
 

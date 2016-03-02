@@ -62,25 +62,6 @@ RUN apt-get update && \
         openssh-server
 RUN dpkg-reconfigure openssh-server
 
-# Drush
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/local/bin --filename=composer
-ENV DRUSH_VERSION='8.0.3'
-RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
-RUN cd /usr/local/src/drush && composer install
-RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush
-COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
-RUN chmod +x /usr/local/bin/drush-remote
-
-# Drupal Console.
-ENV DRUPALCONSOLE_VERSION='0.10.12'
-RUN git clone -b $DRUPALCONSOLE_VERSION --depth 1 https://github.com/hechoendrupal/DrupalConsole.git /usr/local/src/drupalconsole
-RUN cd /usr/local/src/drupalconsole && composer install
-RUN ln -s /usr/local/src/drupalconsole/bin/console /usr/local/bin/drupal
-
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
 # which is standard configuration for a mailhog/mailhog image with hostname mail.

@@ -47,7 +47,7 @@ RUN cd /usr/local/src/xdebug && \
     make clean  && \
     make        && \
     make install
-COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
+COPY ./conf/php/mods-available/xdebug.ini /etc/php/mods-available/xdebug.ini
 
 # NGNIX
 RUN apt-get update && \

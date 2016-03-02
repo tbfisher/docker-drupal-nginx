@@ -15,23 +15,24 @@ CMD ["/sbin/my_init"]
 RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-cli         \
-        php-common      \
-        php-curl        \
-        php-dev         \
-        php-fpm         \
-        php-gd          \
-        php-imagick     \
-        php-imap        \
-        php-intl        \
-        php-ldap        \
-        php-mcrypt      \
-        php-memcached   \
-        php-mysql       \
-        php-redis       \
-        php-sqlite3     \
-        php-tidy
-        # php-memcache
+        php-cli             \
+        php-common          \
+        php-curl            \
+        php-dev             \
+        php-fpm             \
+        php-gd              \
+        php-imagick         \
+        php-imap            \
+        php-intl            \
+        php-ldap            \
+        php-mcrypt          \
+        php-memcache        \
+        php-mysql           \
+        php-redis           \
+        php-sqlite3         \
+        php-tidy            \
+        php-uploadprogress  \
+        php-xml
         # php-xhprof
 
 RUN apt-get update && \
@@ -47,7 +48,7 @@ RUN cd /usr/local/src/xdebug && \
     make clean  && \
     make        && \
     make install
-COPY ./conf/php/mods-available/xdebug.ini /etc/php/mods-available/xdebug.ini
+COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
 
 # NGNIX
 RUN apt-get update && \
@@ -56,7 +57,7 @@ RUN apt-get update && \
         ssl-cert
 RUN service nginx stop
 
-# SSH (for remote drush)
+# SSH
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         openssh-server
@@ -81,10 +82,10 @@ COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 RUN phpenmod \
-    fpm    \
+    # fpm    \
     mcrypt \
-    xdebug \
-    xhprof
+    xdebug
+    # xhprof
 
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/

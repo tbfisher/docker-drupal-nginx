@@ -37,7 +37,8 @@ RUN add-apt-repository ppa:ondrej/php && \
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
+        git                 \
+        mysql-client
 
 # Xdebug
 ENV XDEBUG_VERSION='XDEBUG_2_4_0'

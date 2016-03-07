@@ -83,7 +83,7 @@
 ; development version only in development environments, as errors shown to
 ; application users can inadvertently leak otherwise secure information.
 
-; This is php.ini-production INI file.
+; This is php.ini-development INI file.
 
 ;;;;;;;;;;;;;;;;;;;
 ; Quick Reference ;
@@ -291,12 +291,18 @@ serialize_precision = 17
 ; and below.  This directive makes most sense if used in a per-directory
 ; or per-virtualhost web server configuration file.
 ; http://php.net/open-basedir
+
+; NOTE: this is considered a "broken" security measure.
+;       Applications relying on this feature will not receive full
+;       support by the security team.  For more information please
+;       see /usr/share/doc/php-common/README.Debian.security
+;
 ;open_basedir =
 
 ; This directive allows you to disable certain functions for security reasons.
 ; It receives a comma-delimited list of function names.
 ; http://php.net/disable-functions
-disable_functions =
+disable_functions = pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,
 
 ; This directive allows you to disable certain classes for security reasons.
 ; It receives a comma-delimited list of class names.
@@ -386,7 +392,7 @@ max_input_time = 60
 
 ; Maximum amount of memory a script may consume (128MB)
 ; http://php.net/memory-limit
-memory_limit = -1
+memory_limit = 128M
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Error handling and logging ;
@@ -442,7 +448,7 @@ memory_limit = -1
 ; Development Value: E_ALL
 ; Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; http://php.net/error-reporting
-error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+error_reporting = E_ALL
 
 ; This directive controls whether or not and where PHP will output errors,
 ; notices and warnings too. Error output is very useful during development, but
@@ -459,7 +465,7 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/display-errors
-display_errors = Off
+display_errors = On
 
 ; The display of errors which occur during PHP's startup sequence are handled
 ; separately from display_errors. PHP's default behavior is to suppress those
@@ -470,7 +476,7 @@ display_errors = Off
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/display-startup-errors
-display_startup_errors = Off
+display_startup_errors = On
 
 ; Besides displaying errors, PHP can also log errors to locations such as a
 ; server-specific log, STDERR, or a location specified by the error_log
@@ -514,7 +520,7 @@ report_memleaks = On
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/track-errors
-track_errors = Off
+track_errors = On
 
 ; Turn off normal error reporting and emit XML-RPC error XML
 ; http://php.net/xmlrpc-errors
@@ -566,7 +572,6 @@ html_errors = On
 ; http://php.net/error-log
 ; Example:
 ;error_log = php_errors.log
-error_log = /var/log/php-cli.log
 ; Log errors to syslog (Event Log on Windows).
 ;error_log = syslog
 
@@ -1170,7 +1175,7 @@ mysqlnd.collect_statistics = On
 ; Enable / Disable collection of memory usage statistics by mysqlnd which can be
 ; used to tune and monitor MySQL operations.
 ; http://php.net/mysqlnd.collect_memory_statistics
-mysqlnd.collect_memory_statistics = Off
+mysqlnd.collect_memory_statistics = On
 
 ; Size of a pre-allocated buffer used when sending commands to MySQL in bytes.
 ; http://php.net/mysqlnd.net_cmd_buffer_size
@@ -1526,7 +1531,7 @@ url_rewriter.tags = "a=href,area=href,frame=src,input=src,form=fakeentry"
 ; Development Value: 1
 ; Production Value: -1
 ; http://php.net/zend.assertions
-zend.assertions = -1
+zend.assertions = 1
 
 ; Assert(expr); active by default.
 ; http://php.net/assert.active
@@ -1731,28 +1736,22 @@ ldap.max_links = -1
 [opcache]
 ; Determines if Zend OPCache is enabled
 ;opcache.enable=0
-opcache.enable=1
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
 ;opcache.enable_cli=0
-opcache.enable_cli=1
 
 ; The OPcache shared memory storage size.
 ;opcache.memory_consumption=64
-opcache.memory_consumption=256
 
 ; The amount of memory for interned strings in Mbytes.
 ;opcache.interned_strings_buffer=4
-opcache.interned_strings_buffer=8
 
 ; The maximum number of keys (scripts) in the OPcache hash table.
 ; Only numbers between 200 and 100000 are allowed.
 ;opcache.max_accelerated_files=2000
-opcache.max_accelerated_files=100000
 
 ; The maximum percentage of "wasted" memory until a restart is scheduled.
 ;opcache.max_wasted_percentage=5
-opcache.max_wasted_percentage=10
 
 ; When this directive is enabled, the OPcache appends the current working
 ; directory to the script key, thus eliminating possible collisions between
@@ -1763,13 +1762,11 @@ opcache.max_wasted_percentage=10
 ; When disabled, you must reset the OPcache manually or restart the
 ; webserver for changes to the filesystem to take effect.
 ;opcache.validate_timestamps=1
-opcache.validate_timestamps=1
 
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
 ; once per request. "0" means always validate)
 ;opcache.revalidate_freq=2
-opcache.revalidate_freq=2
 
 ; Enables or disables file search in include_path optimization
 ;opcache.revalidate_path=0
@@ -1780,7 +1777,6 @@ opcache.revalidate_freq=2
 
 ; If enabled, a fast shutdown sequence is used for the accelerated code
 ;opcache.fast_shutdown=0
-opcache.fast_shutdown=1
 
 ; Allow file existence override (file_exists, etc.) performance feature.
 ;opcache.enable_file_override=0
@@ -1851,7 +1847,7 @@ opcache.fast_shutdown=1
 
 ; Enables or disables copying of PHP code (text segment) into HUGE PAGES.
 ; This should improve performance, but requires appropriate OS configuration.
-;opcache.huge_code_pages=1
+;opcache.huge_code_pages=0
 
 [curl]
 ; A default value for the CURLOPT_CAINFO option. This is required to be an

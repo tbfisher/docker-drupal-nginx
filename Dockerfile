@@ -75,12 +75,19 @@ RUN apt-get update && \
 RUN mkdir /var/www_files && \
     chgrp www-data /var/www_files && \
     chmod 775 /var/www_files
+RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak
 COPY ./conf/php/fpm/php.dev.ini /etc/php/7.0/fpm/php.ini
+RUN cp /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf.bak
 COPY ./conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
+RUN cp /etc/php/7.0/cli/php.ini /etc/php/7.0/cli/php.ini.bak
 COPY ./conf/php/cli/php.dev.ini /etc/php/7.0/cli/php.ini
+RUN cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
+RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
+RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.bak
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 RUN phpenmod \
     # fpm    \

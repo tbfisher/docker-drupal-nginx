@@ -11,6 +11,9 @@ ENV LC_ALL     en_US.UTF-8
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
+# Upgrade OS
+RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+
 # PHP
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \

@@ -11,6 +11,9 @@ ENV LC_ALL     en_US.UTF-8
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
+# Upgrade OS
+RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+
 # PHP
 RUN add-apt-repository ppa:ondrej/php5 && \
     apt-get update && \
@@ -33,22 +36,14 @@ RUN add-apt-repository ppa:ondrej/php5 && \
         php5-redis      \
         php5-sqlite     \
         php5-tidy       \
+        php5-xdebug     \
         php5-xhprof
+RUN service php5-fpm stop
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
-
-# Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_4_0'
-RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
-RUN cd /usr/local/src/xdebug && \
-    phpize      && \
-    ./configure && \
-    make clean  && \
-    make        && \
-    make install
-COPY ./conf/php5/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
+        git                 \
+        mysql-client
 
 # NGNIX
 RUN apt-get update && \
@@ -58,29 +53,7 @@ RUN apt-get update && \
 RUN service nginx stop
 
 # SSH (for remote drush)
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        openssh-server
-RUN dpkg-reconfigure openssh-server
-
-# Drush
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        mysql-client
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/local/bin --filename=composer
-ENV DRUSH_VERSION='8.0.3'
-RUN git clone -b $DRUSH_VERSION --depth 1 https://github.com/drush-ops/drush.git /usr/local/src/drush
-RUN cd /usr/local/src/drush && composer install
-RUN ln -s /usr/local/src/drush/drush /usr/local/bin/drush
-COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
-RUN chmod +x /usr/local/bin/drush-remote
-
-# Drupal Console.
-ENV DRUPALCONSOLE_VERSION='0.10.12'
-RUN git clone -b $DRUPALCONSOLE_VERSION --depth 1 https://github.com/hechoendrupal/DrupalConsole.git /usr/local/src/drupalconsole
-RUN cd /usr/local/src/drupalconsole && composer install
-RUN ln -s /usr/local/src/drupalconsole/bin/console /usr/local/bin/drupal
+RUN rm -f /etc/service/sshd/down
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
@@ -89,30 +62,54 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         ssmtp
 
+# Drush, console
+RUN cd /usr/local/bin/ && \
+    curl http://files.drush.org/drush.phar -L -o drush && \
+    chmod +x drush
+COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
+RUN chmod +x /usr/local/bin/drush-remote
+RUN cd /usr/local/bin/ && \
+    curl https://drupalconsole.com/installer -L -o drupal && \
+    chmod +x drupal
+
 # Configure
-RUN mkdir /var/www_files && \
-    chgrp www-data /var/www_files && \
-    chmod 775 /var/www_files
+RUN cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.bak
 COPY ./conf/php5/fpm/php.ini /etc/php5/fpm/php.ini
+RUN cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.bak
 COPY ./conf/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf
+RUN cp /etc/php5/cli/php.ini /etc/php5/cli/php.ini.bak
 COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
+RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
+RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
+RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.bak
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
-# prevent php warnings
+# Prevent php warnings
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 RUN php5enmod \
-    fpm    \
     mcrypt \
     xdebug \
     xhprof
 
+# Configure directories for drupal.
+RUN mkdir /var/www_files && \
+    mkdir -p /var/www_files/public && \
+    mkdir -p /var/www_files/private && \
+    chown -R www-data:www-data /var/www_files
+# Virtualhost is configured to serve from /var/www/web.
+RUN mkdir -p /var/www/web && \
+    echo '<?php phpinfo();' > /var/www/web/index.php && \
+    chgrp www-data /var/www_files && \
+    chmod 775 /var/www_files
+
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/
+RUN chmod -v +x /etc/my_init.d/*.sh
 ADD services/ /etc/service/
 RUN chmod -v +x /etc/service/*/run
-RUN chmod -v +x /etc/my_init.d/*.sh
 
 EXPOSE 80 443 22
 

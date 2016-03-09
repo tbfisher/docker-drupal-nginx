@@ -41,7 +41,8 @@ RUN service php5-fpm stop
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
+        git                 \
+        mysql-client
 
 # NGNIX
 RUN apt-get update && \

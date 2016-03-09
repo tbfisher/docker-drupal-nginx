@@ -35,23 +35,13 @@ RUN apt-get update && \
         php5-redis      \
         php5-sqlite     \
         php5-tidy       \
+        php5-xdebug     \
         php5-xhprof
 RUN service php5-fpm stop
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         git
-
-# Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_4_0'
-RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
-RUN cd /usr/local/src/xdebug && \
-    phpize      && \
-    ./configure && \
-    make clean  && \
-    make        && \
-    make install
-COPY ./conf/php5/mods-available/xdebug.ini /etc/php5/mods-available/xdebug.ini
 
 # NGNIX
 RUN apt-get update && \

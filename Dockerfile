@@ -72,15 +72,19 @@ RUN cd /usr/local/bin/ && \
     chmod +x drupal
 
 # Configure
-RUN mkdir /var/www_files && \
-    chgrp www-data /var/www_files && \
-    chmod 775 /var/www_files
+RUN cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.bak
 COPY ./conf/php5/fpm/php.ini /etc/php5/fpm/php.ini
+RUN cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.bak
 COPY ./conf/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf
+RUN cp /etc/php5/cli/php.ini /etc/php5/cli/php.ini.bak
 COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
+RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default /etc/nginx/sites-available/default
+RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
+RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.bak
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 # Prevent php warnings
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
@@ -89,11 +93,22 @@ RUN php5enmod \
     xdebug \
     xhprof
 
+# Configure directories for drupal.
+RUN mkdir /var/www_files && \
+    mkdir -p /var/www_files/public && \
+    mkdir -p /var/www_files/private && \
+    chown -R www-data:www-data /var/www_files
+# Virtualhost is configured to serve from /var/www/web.
+RUN mkdir -p /var/www/web && \
+    echo '<?php phpinfo();' > /var/www/web/index.php && \
+    chgrp www-data /var/www_files && \
+    chmod 775 /var/www_files
+
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/
+RUN chmod -v +x /etc/my_init.d/*.sh
 ADD services/ /etc/service/
 RUN chmod -v +x /etc/service/*/run
-RUN chmod -v +x /etc/my_init.d/*.sh
 
 EXPOSE 80 443 22
 

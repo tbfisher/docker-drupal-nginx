@@ -36,6 +36,7 @@ RUN apt-get update && \
         php5-sqlite     \
         php5-tidy       \
         php5-xhprof
+RUN service php5-fpm stop
 
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -102,10 +103,9 @@ COPY ./conf/nginx/default /etc/nginx/sites-available/default
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
-# prevent php warnings
+# Prevent php warnings
 RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
 RUN php5enmod \
-    fpm    \
     mcrypt \
     xdebug \
     xhprof

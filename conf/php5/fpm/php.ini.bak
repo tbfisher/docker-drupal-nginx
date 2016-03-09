@@ -300,7 +300,7 @@ serialize_precision = 17
 ; This directive allows you to disable certain functions for security reasons.
 ; It receives a comma-delimited list of function names.
 ; http://php.net/disable-functions
-disable_functions =
+disable_functions = pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,
 
 ; This directive allows you to disable certain classes for security reasons.
 ; It receives a comma-delimited list of class names.
@@ -360,7 +360,7 @@ zend.enable_gc = On
 ; threat in any way, but it makes it possible to determine whether you use PHP
 ; on your server or not.
 ; http://php.net/expose-php
-expose_php = On
+expose_php = Off
 
 ;;;;;;;;;;;;;;;;;;;
 ; Resource Limits ;
@@ -390,7 +390,7 @@ max_input_time = 60
 
 ; Maximum amount of memory a script may consume (128MB)
 ; http://php.net/memory-limit
-memory_limit = -1
+memory_limit = 128M
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Error handling and logging ;
@@ -570,7 +570,6 @@ html_errors = On
 ; http://php.net/error-log
 ; Example:
 ;error_log = php_errors.log
-error_log = /var/log/php5-cli.log
 ; Log errors to syslog (Event Log on Windows).
 ;error_log = syslog
 
@@ -882,7 +881,6 @@ cli_server.color = On
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
 ;date.timezone =
-date.timezone = UTC
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667
@@ -983,7 +981,6 @@ smtp_port = 25
 ; For Unix only.  You may supply arguments as well (default: "sendmail -t -i").
 ; http://php.net/sendmail-path
 ;sendmail_path =
-sendmail_path = "/usr/sbin/ssmtp -t"
 
 ; Force the addition of the specified parameters to be passed as extra parameters
 ; to the sendmail binary. These parameters will always replace the value of
@@ -1830,28 +1827,22 @@ ldap.max_links = -1
 [opcache]
 ; Determines if Zend OPCache is enabled
 ;opcache.enable=0
-opcache.enable=1
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
 ;opcache.enable_cli=0
-opcache.enable_cli=1
 
 ; The OPcache shared memory storage size.
 ;opcache.memory_consumption=64
-opcache.memory_consumption=256
 
 ; The amount of memory for interned strings in Mbytes.
 ;opcache.interned_strings_buffer=4
-opcache.interned_strings_buffer=8
 
 ; The maximum number of keys (scripts) in the OPcache hash table.
 ; Only numbers between 200 and 100000 are allowed.
 ;opcache.max_accelerated_files=2000
-opcache.max_accelerated_files=100000
 
 ; The maximum percentage of "wasted" memory until a restart is scheduled.
 ;opcache.max_wasted_percentage=5
-opcache.max_wasted_percentage=10
 
 ; When this directive is enabled, the OPcache appends the current working
 ; directory to the script key, thus eliminating possible collisions between
@@ -1862,13 +1853,11 @@ opcache.max_wasted_percentage=10
 ; When disabled, you must reset the OPcache manually or restart the
 ; webserver for changes to the filesystem to take effect.
 ;opcache.validate_timestamps=1
-opcache.validate_timestamps=1
 
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
 ; once per request. "0" means always validate)
 ;opcache.revalidate_freq=2
-opcache.revalidate_freq=2
 
 ; Enables or disables file search in include_path optimization
 ;opcache.revalidate_path=0
@@ -1884,7 +1873,6 @@ opcache.revalidate_freq=2
 
 ; If enabled, a fast shutdown sequence is used for the accelerated code
 ;opcache.fast_shutdown=0
-opcache.fast_shutdown=1
 
 ; Allow file existence override (file_exists, etc.) performance feature.
 ;opcache.enable_file_override=0

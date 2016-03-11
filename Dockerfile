@@ -53,7 +53,10 @@ RUN apt-get update && \
 RUN service nginx stop
 
 # SSH (for remote drush)
-RUN rm -f /etc/service/sshd/down
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        openssh-server
+RUN dpkg-reconfigure openssh-server
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,

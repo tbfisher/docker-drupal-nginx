@@ -1,6 +1,6 @@
 server {
     listen 80;
-    root /var/www;
+    root /var/www/web;
     gzip_static on;
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
@@ -40,7 +40,7 @@ server {
 }
 server {
     listen 443;
-    root /var/www;
+    root /var/www/web;
     gzip_static on;
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;

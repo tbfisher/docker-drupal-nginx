@@ -372,7 +372,6 @@ expose_php = Off
 ; http://php.net/max-execution-time
 ; Note: This directive is hardcoded to 0 for the CLI SAPI
 ;max_execution_time = 30
-max_execution_time = 120
 
 ; Maximum amount of time each script may spend parsing request data. It's a good
 ; idea to limit this time on productions servers in order to eliminate unexpectedly
@@ -663,7 +662,7 @@ auto_globals_jit = On
 ; is disabled through enable_post_data_reading.
 ; http://php.net/post-max-size
 ;post_max_size = 8M
-post_max_size = 64M
+post_max_size = 128M
 
 ; Automatically add files before PHP document.
 ; http://php.net/auto-prepend-file
@@ -797,7 +796,7 @@ file_uploads = On
 ; Maximum allowed size for uploaded files.
 ; http://php.net/upload-max-filesize
 upload_max_filesize = 2M
-upload_max_filesize = 64M
+upload_max_filesize = 128M
 
 ; Maximum number of files that can be uploaded via a single request
 max_file_uploads = 20
@@ -1008,7 +1007,6 @@ smtp_port = 25
 ; For Unix only.  You may supply arguments as well (default: "sendmail -t -i").
 ; http://php.net/sendmail-path
 ;sendmail_path =
-sendmail_path = "/usr/sbin/ssmtp -t"
 
 ; Force the addition of the specified parameters to be passed as extra parameters
 ; to the sendmail binary. These parameters will always replace the value of
@@ -1847,7 +1845,6 @@ opcache.enable=1
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
 ;opcache.enable_cli=0
-opcache.enable_cli=1
 
 ; The OPcache shared memory storage size.
 ;opcache.memory_consumption=64
@@ -1875,13 +1872,11 @@ opcache.max_wasted_percentage=10
 ; When disabled, you must reset the OPcache manually or restart the
 ; webserver for changes to the filesystem to take effect.
 ;opcache.validate_timestamps=1
-opcache.validate_timestamps=1
 
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
 ; once per request. "0" means always validate)
 ;opcache.revalidate_freq=2
-opcache.revalidate_freq=2
 
 ; Enables or disables file search in include_path optimization
 ;opcache.revalidate_path=0

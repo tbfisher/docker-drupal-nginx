@@ -77,13 +77,16 @@ RUN cd /usr/local/bin/ && \
 
 # Configure
 RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak
-COPY ./conf/php/fpm/php.dev.ini /etc/php/7.0/fpm/php.ini
+COPY ./conf/php/fpm/php.ini-development /etc/php/7.0/fpm/php.ini
+# COPY ./conf/php/fpm/php.ini-production /etc/php/7.0/fpm/php.ini
 RUN cp /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf.bak
 COPY ./conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 RUN cp /etc/php/7.0/cli/php.ini /etc/php/7.0/cli/php.ini.bak
-COPY ./conf/php/cli/php.dev.ini /etc/php/7.0/cli/php.ini
+COPY ./conf/php/cli/php.ini-development /etc/php/7.0/cli/php.ini
+# COPY ./conf/php/cli/php.ini-production /etc/php/7.0/cli/php.ini
 RUN cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-COPY ./conf/nginx/default /etc/nginx/sites-available/default
+COPY ./conf/nginx/default-development /etc/nginx/sites-available/default
+# COPY ./conf/nginx/default-production /etc/nginx/sites-available/default
 RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak

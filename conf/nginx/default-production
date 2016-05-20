@@ -4,7 +4,7 @@ server {
     gzip_static on;
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
-    fastcgi_read_timeout 900;
+    fastcgi_read_timeout 30;
     location = /favicon.ico {
         log_not_found off;
         access_log off;
@@ -44,7 +44,7 @@ server {
     gzip_static on;
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
-    fastcgi_read_timeout 900;
+    fastcgi_read_timeout 30;
 
     ssl on;
     ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;

@@ -104,6 +104,7 @@ RUN mkdir /var/www_files && \
     mkdir -p /var/www_files/public && \
     mkdir -p /var/www_files/private && \
     chown -R www-data:www-data /var/www_files
+VOLUME /var/www_files
 # Virtualhost is configured to serve from /var/www/web.
 RUN mkdir -p /var/www/web && \
     echo '<?php phpinfo();' > /var/www/web/index.php && \

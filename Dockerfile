@@ -37,7 +37,8 @@ RUN add-apt-repository ppa:ondrej/php && \
         php5.5-sqlite     \
         php5.5-tidy       \
         php5.5-xdebug     \
-        php5.5-xhprof
+        php5.5-xhprof     \
+        php5.5-zip
 
 # NGNIX
 RUN apt-get update && \

@@ -78,12 +78,12 @@ RUN apt-get update && \
 
 # Configure
 RUN cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.bak
-COPY ./conf/php5/fpm/php.ini-development /etc/php5/fpm/php.ini
-# COPY ./conf/php5/fpm/php.ini-production /etc/php5/fpm/php.ini
+COPY ./conf/php/fpm/php.ini-development /etc/php5/fpm/php.ini
+# COPY ./conf/php/fpm/php.ini-production /etc/php5/fpm/php.ini
 RUN cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.bak
-COPY ./conf/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf
+COPY ./conf/php/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf
 RUN cp /etc/php5/cli/php.ini /etc/php5/cli/php.ini.bak
-COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
+COPY ./conf/php/cli/php.ini /etc/php5/cli/php.ini
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default-development /etc/nginx/sites-available/default
 # COPY ./conf/nginx/default-production /etc/nginx/sites-available/default

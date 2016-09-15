@@ -39,11 +39,6 @@ RUN apt-get update && \
         php5-xhprof
 RUN service php5-fpm stop
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git                 \
-        mysql-client
-
 # NGNIX
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
@@ -73,6 +68,13 @@ RUN chmod +x /usr/local/bin/drush-remote
 RUN cd /usr/local/bin/ && \
     curl https://drupalconsole.com/installer -L -o drupal && \
     chmod +x drupal
+
+# Required for drush, convenience utilities, etc.
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git                 \
+        mysql-client        \
+        screen
 
 # Configure
 RUN cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.bak

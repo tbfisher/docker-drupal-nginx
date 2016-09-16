@@ -1,6 +1,6 @@
 # http://phusion.github.io/baseimage-docker/
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.19
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -18,41 +18,44 @@ RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-cli             \
-        php-common          \
-        php-curl            \
-        php-dev             \
-        php-fpm             \
-        php-gd              \
-        php-imagick         \
-        php-imap            \
-        php-intl            \
-        php-ldap            \
-        php-mbstring        \
-        php-mcrypt          \
-        php-memcache        \
-        php-mysql           \
-        php-redis           \
-        php-sqlite3         \
-        php-tidy            \
-        php-uploadprogress  \
-        php-xdebug          \
-        php-xml             \
-        php-zip
-        # php-xhprof
+        php-pear          \
+        php7.0-cli        \
+        php7.0-common     \
+        php7.0-curl       \
+        php7.0-dev        \
+        php7.0-fpm        \
+        php7.0-gd         \
+        php7.0-imagick    \
+        php7.0-imap       \
+        php7.0-intl       \
+        php7.0-json       \
+        php7.0-ldap       \
+        php7.0-mbstring   \
+        php7.0-mcrypt     \
+        php7.0-memcache   \
+        php7.0-mysql      \
+        php7.0-opcache    \
+        php7.0-readline   \
+        php7.0-redis      \
+        php7.0-sqlite     \
+        php7.0-tidy       \
+        php7.0-xdebug     \
+        php7.0-xml        \
+        php7.0-zip
+        # php7.0-xhprof
 
 # NGNIX
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         nginx    \
         ssl-cert
-RUN service nginx stop
 
 # SSH (for remote drush)
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         openssh-server
 RUN dpkg-reconfigure openssh-server
+RUN usermod -G ssl-cert www-data
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
@@ -79,15 +82,16 @@ RUN apt-get update && \
         screen
 
 # Configure
+RUN mkdir /run/php
 RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak
 COPY ./conf/php/fpm/php.ini-development /etc/php/7.0/fpm/php.ini
-# COPY ./conf/php/fpm/php.ini-production /etc/php/7.0/fpm/php.ini
+# COPY /conf/php/fpm/php.ini-production /etc/php/7.0/fpm/php.ini
 RUN cp /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf.bak
-COPY ./conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
+COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 RUN cp /etc/php/7.0/cli/php.ini /etc/php/7.0/cli/php.ini.bak
-COPY ./conf/php/cli/php.ini-development /etc/php/7.0/cli/php.ini
-# COPY ./conf/php/cli/php.ini-production /etc/php/7.0/cli/php.ini
-RUN cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+COPY /conf/php/cli/php.ini-development /etc/php/7.0/cli/php.ini
+# COPY /conf/php/cli/php.ini-production /etc/php/7.0/cli/php.ini
+RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default-development /etc/nginx/sites-available/default
 # COPY ./conf/nginx/default-production /etc/nginx/sites-available/default
 RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak

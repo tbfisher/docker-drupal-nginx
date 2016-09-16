@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-ps cax | grep php-fpm7.0 > /dev/null
-if [ $? -ne 0 ]; then
-  mkdir -p /run/php
-  php-fpm7.0 -c /etc/php/7.0/fpm/
-fi

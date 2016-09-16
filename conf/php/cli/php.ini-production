@@ -383,6 +383,7 @@ max_input_time = 60
 
 ; How many GET/POST/COOKIE input variables may be accepted
 ; max_input_vars = 1000
+max_input_vars = 2000
 
 ; Maximum amount of memory a script may consume (128MB)
 ; http://php.net/memory-limit
@@ -687,7 +688,6 @@ default_charset = "UTF-8"
 
 ; PHP output character encoding is set to empty.
 ; If empty, default_charset is used.
-; mbstring or iconv output handler is used.
 ; See also output_buffer.
 ; http://php.net/output-encoding
 ;output_encoding =
@@ -867,6 +867,7 @@ default_socket_timeout = 60
 ;extension=php_bz2.dll
 ;extension=php_curl.dll
 ;extension=php_fileinfo.dll
+;extension=php_ftp.dll
 ;extension=php_gd2.dll
 ;extension=php_gettext.dll
 ;extension=php_gmp.dll
@@ -956,6 +957,7 @@ date.timezone = UTC
 ; happens within intl functions. The value is the level of the error produced.
 ; Default is 0, which does not produce any errors.
 ;intl.error_level = E_WARNING
+;intl.use_exceptions = 0
 
 [sqlite3]
 ;sqlite3.extension_dir =
@@ -1849,6 +1851,11 @@ opcache.fast_shutdown=1
 
 ; Enables or disables checksum validation when script loaded from file cache.
 ;opcache.file_cache_consistency_checks=1
+
+; Implies opcache.file_cache_only=1 for a certain process that failed to
+; reattach to the shared memory (for Windows only). Explicitly enabled file
+; cache is required.
+;opcache.file_cache_fallback=1
 
 ; Enables or disables copying of PHP code (text segment) into HUGE PAGES.
 ; This should improve performance, but requires appropriate OS configuration.

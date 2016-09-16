@@ -37,13 +37,9 @@ RUN add-apt-repository ppa:ondrej/php && \
         php-tidy            \
         php-uploadprogress  \
         php-xdebug          \
-        php-xml
+        php-xml             \
+        php-zip
         # php-xhprof
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git                 \
-        mysql-client
 
 # NGNIX
 RUN apt-get update && \
@@ -74,6 +70,13 @@ RUN chmod +x /usr/local/bin/drush-remote
 RUN cd /usr/local/bin/ && \
     curl https://drupalconsole.com/installer -L -o drupal && \
     chmod +x drupal
+
+# Required for drush, convenience utilities, etc.
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git                 \
+        mysql-client        \
+        screen
 
 # Configure
 RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak

@@ -15,35 +15,30 @@ CMD ["/sbin/my_init"]
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 
 # PHP
-RUN add-apt-repository ppa:ondrej/php5-5.6 && \
+RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        php-pear        \
-        php5-cli        \
-        php5-common     \
-        php5-curl       \
-        php5-dev        \
-        php5-fpm        \
-        php5-gd         \
-        php5-imagick    \
-        php5-imap       \
-        php5-intl       \
-        php5-json       \
-        php5-ldap       \
-        php5-mcrypt     \
-        php5-memcache   \
-        php5-mysql      \
-        php5-redis      \
-        php5-sqlite     \
-        php5-tidy       \
-        php5-xdebug
-        # php5-xhprof
-RUN service php5-fpm stop
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git                 \
-        mysql-client
+        php-pear          \
+        php5.6-cli        \
+        php5.6-common     \
+        php5.6-curl       \
+        php5.6-dev        \
+        php5.6-fpm        \
+        php5.6-gd         \
+        php5.6-imagick    \
+        php5.6-imap       \
+        php5.6-intl       \
+        php5.6-json       \
+        php5.6-ldap       \
+        php5.6-mcrypt     \
+        php5.6-memcache   \
+        php5.6-mysql      \
+        php5.6-redis      \
+        php5.6-sqlite     \
+        php5.6-tidy       \
+        php5.6-xdebug     \
+        php5.6-xhprof     \
+        php5.6-zip
 
 # NGNIX
 RUN apt-get update && \
@@ -75,14 +70,21 @@ RUN cd /usr/local/bin/ && \
     curl https://drupalconsole.com/installer -L -o drupal && \
     chmod +x drupal
 
+# Required for drush, convenience utilities, etc.
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git                 \
+        mysql-client        \
+        screen
+
 # Configure
-RUN cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.bak
-COPY ./conf/php5/fpm/php.ini-development /etc/php5/fpm/php.ini
-# COPY ./conf/php5/fpm/php.ini-production /etc/php5/fpm/php.ini
-RUN cp /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.bak
-COPY ./conf/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf
-RUN cp /etc/php5/cli/php.ini /etc/php5/cli/php.ini.bak
-COPY ./conf/php5/cli/php.ini /etc/php5/cli/php.ini
+RUN cp /etc/php/5.6/fpm/php.ini /etc/php/5.6/fpm/php.ini.bak
+COPY ./conf/php/fpm/php.ini-development /etc/php/5.6/fpm/php.ini
+# COPY /conf/php/fpm/php.ini-production /etc/php/5.6/fpm/php.ini
+RUN cp /etc/php/5.6/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf.bak
+COPY /conf/php/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf
+RUN cp /etc/php/5.6/cli/php.ini /etc/php/5.6/cli/php.ini.bak
+COPY /conf/php/cli/php.ini /etc/php/5.6/cli/php.ini
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default-development /etc/nginx/sites-available/default
 # COPY ./conf/nginx/default-production /etc/nginx/sites-available/default
@@ -93,8 +95,8 @@ COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.bak
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 # Prevent php warnings
-RUN sed -ir 's@^#@//@' /etc/php5/mods-available/*
-RUN php5enmod \
+RUN sed -ir 's@^#@//@' /etc/php/5.6/mods-available/*
+RUN phpenmod \
     mcrypt \
     xdebug \
     xhprof

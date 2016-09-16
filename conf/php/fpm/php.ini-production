@@ -372,6 +372,7 @@ expose_php = Off
 ; http://php.net/max-execution-time
 ; Note: This directive is hardcoded to 0 for the CLI SAPI
 ;max_execution_time = 30
+max_execution_time = 30
 
 ; Maximum amount of time each script may spend parsing request data. It's a good
 ; idea to limit this time on productions servers in order to eliminate unexpectedly
@@ -573,7 +574,7 @@ html_errors = On
 ; http://php.net/error-log
 ; Example:
 ;error_log = php_errors.log
-error_log = /var/log/php5-fpm.log
+error_log = /var/log/php-fpm.log
 ; Log errors to syslog (Event Log on Windows).
 ;error_log = syslog
 
@@ -758,7 +759,6 @@ enable_dl = Off
 ; to use SCRIPT_FILENAME rather than PATH_TRANSLATED.
 ; http://php.net/cgi.fix-pathinfo
 ;cgi.fix_pathinfo=1
-cgi.fix_pathinfo=0
 
 ; FastCGI under IIS (on WINNT based OS) supports the ability to impersonate
 ; security tokens of the calling client.  This allows IIS to define the
@@ -1392,7 +1392,7 @@ session.save_handler = files
 ; where MODE is the octal representation of the mode. Note that this
 ; does not overwrite the process's umask.
 ; http://php.net/session.save-path
-;session.save_path = "/var/lib/php5/sessions"
+;session.save_path = "/var/lib/php/sessions"
 
 ; Whether to use strict session mode.
 ; Strict session mode does not accept uninitialized session ID and regenerate

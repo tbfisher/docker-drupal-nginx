@@ -1,6 +1,2 @@
-#!/usr/bin/env bash
-
-ps cax | grep nginx > /dev/null
-if [ $? -ne 0 ]; then
-    /usr/sbin/nginx
-fi
+#!/bin/sh
+exec /usr/sbin/nginx >>/var/log/nginx/nginx.log 2>&1

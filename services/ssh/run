@@ -1,6 +1,2 @@
-#!/usr/bin/env bash
-
-ps cax | grep sshd > /dev/null
-if [ $? -ne 0 ]; then
-  /usr/sbin/sshd
-fi
+#!/bin/sh
+exec /usr/sbin/sshd >>/var/log/sshd.log 2>&1

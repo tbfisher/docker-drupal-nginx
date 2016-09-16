@@ -1,6 +1,6 @@
 # http://phusion.github.io/baseimage-docker/
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.19
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -30,6 +30,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php5.6-intl       \
         php5.6-json       \
         php5.6-ldap       \
+        php5.6-mbstring   \
         php5.6-mcrypt     \
         php5.6-memcache   \
         php5.6-mysql      \
@@ -38,6 +39,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php5.6-tidy       \
         php5.6-xdebug     \
         php5.6-xhprof     \
+        php5.6-xml        \
         php5.6-zip
 
 # NGNIX
@@ -45,13 +47,13 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         nginx    \
         ssl-cert
-RUN service nginx stop
 
 # SSH (for remote drush)
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         openssh-server
 RUN dpkg-reconfigure openssh-server
+RUN usermod -G ssl-cert www-data
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
@@ -78,6 +80,7 @@ RUN apt-get update && \
         screen
 
 # Configure
+RUN mkdir /run/php
 RUN cp /etc/php/5.6/fpm/php.ini /etc/php/5.6/fpm/php.ini.bak
 COPY ./conf/php/fpm/php.ini-development /etc/php/5.6/fpm/php.ini
 # COPY /conf/php/fpm/php.ini-production /etc/php/5.6/fpm/php.ini

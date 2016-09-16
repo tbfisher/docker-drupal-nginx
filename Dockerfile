@@ -81,7 +81,7 @@ RUN apt-get update && \
         mysql-client        \
         screen
 
-# Configure
+# Configure PHP
 RUN mkdir /run/php
 RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak
 COPY ./conf/php/fpm/php.ini-development /etc/php/7.0/fpm/php.ini
@@ -91,19 +91,25 @@ COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 RUN cp /etc/php/7.0/cli/php.ini /etc/php/7.0/cli/php.ini.bak
 COPY /conf/php/cli/php.ini-development /etc/php/7.0/cli/php.ini
 # COPY /conf/php/cli/php.ini-production /etc/php/7.0/cli/php.ini
+# Prevent php warnings
+RUN sed -ir 's@^#@//@' /etc/php/7.0/mods-available/*
+RUN phpenmod \
+    mcrypt \
+    xdebug
+    # xhprof
+
+# Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default-development /etc/nginx/sites-available/default
 # COPY ./conf/nginx/default-production /etc/nginx/sites-available/default
 RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 COPY ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Configure sshd
 RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 COPY ./conf/ssh/sshd_config /etc/ssh/sshd_config
 RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.bak
 COPY ./conf/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
-RUN phpenmod \
-    mcrypt \
-    xdebug
-    # xhprof
 
 # Configure directories for drupal.
 RUN mkdir /var/www_files && \

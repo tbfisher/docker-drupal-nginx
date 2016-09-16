@@ -1,4 +1,4 @@
-#	$OpenBSD: sshd_config,v 1.80 2008/07/02 02:24:18 djm Exp $
+#   $OpenBSD: sshd_config,v 1.80 2008/07/02 02:24:18 djm Exp $
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
@@ -47,7 +47,7 @@ SyslogFacility AUTHPRIV
 
 #RSAAuthentication yes
 #PubkeyAuthentication yes
-#AuthorizedKeysFile	.ssh/authorized_keys
+#AuthorizedKeysFile .ssh/authorized_keys
 
 # For this to work you will also need host keys in /etc/ssh_known_hosts
 #RhostsRSAAuthentication no
@@ -94,7 +94,7 @@ ChallengeResponseAuthentication no
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 # Also, PAM will deny null passwords by default.  If you need to allow
-# null passwords, add the "	nullok" option to the end of the
+# null passwords, add the " nullok" option to the end of the
 # securityserver.so line in /etc/pam.d/sshd.
 #UsePAM yes
 
@@ -123,10 +123,10 @@ X11Forwarding yes
 #Banner none
 
 # override default of no subsystems
-Subsystem	sftp	/usr/lib/openssh/sftp-server
+Subsystem   sftp    /usr/lib/openssh/sftp-server
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
-#	X11Forwarding no
-#	AllowTcpForwarding no
-#	ForceCommand cvs server
+#   X11Forwarding no
+#   AllowTcpForwarding no
+#   ForceCommand cvs server

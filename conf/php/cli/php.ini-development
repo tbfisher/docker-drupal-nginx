@@ -567,7 +567,6 @@ html_errors = On
 ; http://php.net/error-log
 ; Example:
 ;error_log = php_errors.log
-error_log = /var/log/php-cli.log
 ; Log errors to syslog (Event Log on Windows).
 ;error_log = syslog
 

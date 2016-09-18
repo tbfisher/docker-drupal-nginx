@@ -2,8 +2,6 @@ server {
     listen 80;
     root /var/www/web;
     gzip_static on;
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
     fastcgi_read_timeout 30;
     location = /favicon.ico {
         log_not_found off;

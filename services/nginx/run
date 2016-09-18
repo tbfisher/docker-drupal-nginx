@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/sbin/nginx >>/var/log/nginx/nginx.log 2>&1
+exec /usr/sbin/nginx

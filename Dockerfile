@@ -47,15 +47,13 @@ RUN add-apt-repository ppa:ondrej/php && \
 # NGNIX
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        nginx    \
-        ssl-cert
+        nginx
 
 # SSH (for remote drush)
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         openssh-server
 RUN dpkg-reconfigure openssh-server
-RUN usermod -G ssl-cert www-data
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
@@ -129,7 +127,7 @@ RUN chmod -v +x /etc/my_init.d/*.sh
 ADD services/ /etc/service/
 RUN chmod -v +x /etc/service/*/run
 
-EXPOSE 80 443 22
+EXPOSE 80 22
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

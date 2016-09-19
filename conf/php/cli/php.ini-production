@@ -571,6 +571,7 @@ html_errors = On
 ; http://php.net/error-log
 ; Example:
 ;error_log = php_errors.log
+error_log = /var/log/php-cli.log
 ; Log errors to syslog (Event Log on Windows).
 ;error_log = syslog
 
@@ -679,6 +680,7 @@ default_mimetype = "text/html"
 ; PHP's default character set is set to empty.
 ; http://php.net/default-charset
 ;default_charset = "UTF-8"
+default_charset = "UTF-8"
 
 ; Always populate the $HTTP_RAW_POST_DATA variable. PHP's default behavior is
 ; to disable this feature. If post reading is disabled through

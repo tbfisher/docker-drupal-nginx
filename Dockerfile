@@ -85,7 +85,8 @@ COPY ./conf/php/fpm/php.ini-development /etc/php/5.6/fpm/php.ini
 RUN cp /etc/php/5.6/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf.bak
 COPY /conf/php/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf
 RUN cp /etc/php/5.6/cli/php.ini /etc/php/5.6/cli/php.ini.bak
-COPY /conf/php/cli/php.ini /etc/php/5.6/cli/php.ini
+COPY /conf/php/cli/php.ini-development /etc/php/5.6/cli/php.ini
+# COPY /conf/php/cli/php.ini-production /etc/php/5.6/cli/php.ini
 # Prevent php warnings
 RUN sed -ir 's@^#@//@' /etc/php/5.6/mods-available/*
 RUN phpenmod \

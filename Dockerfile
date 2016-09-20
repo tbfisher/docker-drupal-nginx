@@ -119,6 +119,10 @@ RUN mkdir -p /var/www/web && \
     chgrp www-data /var/www_files && \
     chmod 775 /var/www_files
 
+# https://github.com/phusion/baseimage-docker/pull/339
+# https://github.com/phusion/baseimage-docker/pull/341
+RUN sed -i 's/syslog/adm/g' /etc/logrotate.conf
+
 # Use baseimage-docker's init system.
 ADD init/ /etc/my_init.d/
 RUN chmod -v +x /etc/my_init.d/*.sh

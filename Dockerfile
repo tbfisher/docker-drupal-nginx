@@ -34,6 +34,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php5.6-mcrypt     \
         php5.6-memcache   \
         php5.6-mysql      \
+        php5.6-opcache    \
         php5.6-redis      \
         php5.6-sqlite     \
         php5.6-tidy       \

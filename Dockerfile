@@ -19,30 +19,44 @@ RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear          \
-        php7.0-cli        \
-        php7.0-common     \
-        php7.0-curl       \
-        php7.0-dev        \
-        php7.0-fpm        \
-        php7.0-gd         \
-        php7.0-imagick    \
-        php7.0-imap       \
-        php7.0-intl       \
-        php7.0-json       \
-        php7.0-ldap       \
-        php7.0-mbstring   \
-        php7.0-mcrypt     \
-        php7.0-memcache   \
-        php7.0-mysql      \
-        php7.0-opcache    \
-        php7.0-readline   \
-        php7.0-redis      \
-        php7.0-sqlite     \
-        php7.0-tidy       \
-        php7.0-xdebug     \
-        php7.0-xml        \
-        php7.0-zip
-        # php7.0-xhprof
+        php7.1-cli        \
+        php7.1-common     \
+        php7.1-curl       \
+        php7.1-dev        \
+        php7.1-fpm        \
+        php7.1-gd         \
+        php7.1-imagick    \
+        php7.1-imap       \
+        php7.1-intl       \
+        php7.1-json       \
+        php7.1-ldap       \
+        php7.1-mbstring   \
+        php7.1-mcrypt     \
+        php7.1-memcache   \
+        php7.1-mysql      \
+        php7.1-opcache    \
+        php7.1-readline   \
+        # php7.1-redis      \
+        php7.1-sqlite     \
+        php7.1-tidy       \
+        # php7.1-xdebug     \
+        php7.1-xml        \
+        php7.1-zip
+        # php7.1-xhprof
+
+# Xdebug
+ENV XDEBUG_VERSION='XDEBUG_2_5_0RC1'
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git
+RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
+RUN cd /usr/local/src/xdebug && \
+    phpize      && \
+    ./configure && \
+    make clean  && \
+    make        && \
+    make install
+COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.1/mods-available/xdebug.ini
 
 # NGNIX
 RUN apt-get update && \
@@ -81,16 +95,16 @@ RUN apt-get update && \
 
 # Configure PHP
 RUN mkdir /run/php
-RUN cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.bak
-COPY ./conf/php/fpm/php.ini-development /etc/php/7.0/fpm/php.ini
-# COPY /conf/php/fpm/php.ini-production /etc/php/7.0/fpm/php.ini
-RUN cp /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf.bak
-COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
-RUN cp /etc/php/7.0/cli/php.ini /etc/php/7.0/cli/php.ini.bak
-COPY /conf/php/cli/php.ini-development /etc/php/7.0/cli/php.ini
-# COPY /conf/php/cli/php.ini-production /etc/php/7.0/cli/php.ini
+RUN cp /etc/php/7.1/fpm/php.ini /etc/php/7.1/fpm/php.ini.bak
+COPY ./conf/php/fpm/php.ini-development /etc/php/7.1/fpm/php.ini
+# COPY /conf/php/fpm/php.ini-production /etc/php/7.1/fpm/php.ini
+RUN cp /etc/php/7.1/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf.bak
+COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.1/fpm/pool.d/www.conf
+RUN cp /etc/php/7.1/cli/php.ini /etc/php/7.1/cli/php.ini.bak
+COPY /conf/php/cli/php.ini-development /etc/php/7.1/cli/php.ini
+# COPY /conf/php/cli/php.ini-production /etc/php/7.1/cli/php.ini
 # Prevent php warnings
-RUN sed -ir 's@^#@//@' /etc/php/7.0/mods-available/*
+RUN sed -ir 's@^#@//@' /etc/php/7.1/mods-available/*
 RUN phpenmod \
     mcrypt \
     xdebug

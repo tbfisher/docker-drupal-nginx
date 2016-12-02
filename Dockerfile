@@ -44,6 +44,20 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.1-zip
         # php7.1-xhprof
 
+# phpredis
+ENV PHPREDIS_VERSION='3.0.0'
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
+        git
+RUN git clone -b $PHPREDIS_VERSION --depth 1 https://github.com/phpredis/phpredis.git /usr/local/src/phpredis
+RUN cd /usr/local/src/phpredis && \
+    phpize      && \
+    ./configure && \
+    make clean  && \
+    make        && \
+    make install
+COPY ./conf/php/mods-available/redis.ini /etc/php/7.1/mods-available/redis.ini
+
 # Xdebug
 ENV XDEBUG_VERSION='XDEBUG_2_5_0RC1'
 RUN apt-get update && \
@@ -107,6 +121,7 @@ COPY /conf/php/cli/php.ini-development /etc/php/7.1/cli/php.ini
 RUN sed -ir 's@^#@//@' /etc/php/7.1/mods-available/*
 RUN phpenmod \
     mcrypt \
+    redis  \
     xdebug
     # xhprof
 

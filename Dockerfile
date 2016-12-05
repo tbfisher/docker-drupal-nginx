@@ -39,7 +39,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         # php7.1-redis      \
         php7.1-sqlite     \
         php7.1-tidy       \
-        # php7.1-xdebug     \
+        php7.1-xdebug     \
         php7.1-xml        \
         php7.1-zip
         # php7.1-xhprof
@@ -57,20 +57,6 @@ RUN cd /usr/local/src/phpredis && \
     make        && \
     make install
 COPY ./conf/php/mods-available/redis.ini /etc/php/7.1/mods-available/redis.ini
-
-# Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_5_0'
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
-        git
-RUN git clone -b $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/local/src/xdebug
-RUN cd /usr/local/src/xdebug && \
-    phpize      && \
-    ./configure && \
-    make clean  && \
-    make        && \
-    make install
-COPY ./conf/php/mods-available/xdebug.ini /etc/php/7.1/mods-available/xdebug.ini
 
 # NGNIX
 RUN apt-get update && \

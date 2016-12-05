@@ -59,7 +59,7 @@ RUN cd /usr/local/src/phpredis && \
 COPY ./conf/php/mods-available/redis.ini /etc/php/7.1/mods-available/redis.ini
 
 # Xdebug
-ENV XDEBUG_VERSION='XDEBUG_2_5_0RC1'
+ENV XDEBUG_VERSION='XDEBUG_2_5'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         git

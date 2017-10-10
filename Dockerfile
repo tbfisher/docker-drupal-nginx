@@ -19,6 +19,7 @@ RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear          \
+        php7.1-bcmath     \
         php7.1-cli        \
         php7.1-common     \
         php7.1-curl       \

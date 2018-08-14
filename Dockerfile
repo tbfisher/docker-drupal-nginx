@@ -32,7 +32,6 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.2-json       \
         php7.2-ldap       \
         php7.2-mbstring   \
-        php7.2-mcrypt     \
         php7.2-memcache   \
         php7.2-mysql      \
         php7.2-opcache    \
@@ -107,7 +106,6 @@ COPY /conf/php/cli/php.ini-development /etc/php/7.2/cli/php.ini
 # Prevent php warnings
 RUN sed -ir 's@^#@//@' /etc/php/7.2/mods-available/*
 RUN phpenmod \
-    mcrypt \
     redis  \
     xdebug
     # xhprof

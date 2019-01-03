@@ -80,7 +80,7 @@ RUN apt-get update && \
 
 # Drush, console
 RUN cd /usr/local/bin/ && \
-    curl http://files.drush.org/drush.phar -L -o drush && \
+    curl https://github.com/drush-ops/drush/releases/download/8.1.17/drush.phar -L -o drush && \
     chmod +x drush
 COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
 RUN chmod +x /usr/local/bin/drush-remote

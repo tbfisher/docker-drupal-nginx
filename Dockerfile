@@ -42,6 +42,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.1-tidy       \
         php7.1-xdebug     \
         php7.1-xml        \
+        php7.1-bz2        \
         php7.1-zip
         # php7.1-xhprof
 

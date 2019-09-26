@@ -41,7 +41,8 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.2-tidy       \
         php7.2-xdebug     \
         php7.2-xml        \
-        php7.2-zip
+        php7.2-zip        \
+        php7.2-soap
         # php7.2-xhprof
 
 # phpredis

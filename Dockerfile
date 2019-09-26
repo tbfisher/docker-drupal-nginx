@@ -119,6 +119,8 @@ RUN phpenmod \
     # xhprof
 
 RUN pecl install mcrypt-1.0.1 -y
+RUN echo extension=mcrypt.so >> /etc/php/7.2/fpm/php.ini
+RUN echo extension=mcrypt.so >> /etc/php/7.2/cli/php.ini
 
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak

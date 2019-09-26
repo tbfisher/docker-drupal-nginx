@@ -42,7 +42,14 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.2-xdebug     \
         php7.2-xml        \
         php7.2-zip        \
-        php7.2-soap
+        php7.2-soap       \
+        gcc               \
+        make              \
+        autoconf          \
+        libc-dev          \
+        pkg-config        \
+        php7.2-dev        \
+        libmcrypt-dev
         # php7.2-xhprof
 
 # phpredis
@@ -110,6 +117,8 @@ RUN phpenmod \
     redis  \
     soap
     # xhprof
+
+RUN pecl install mcrypt-1.0.1 -y
 
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak

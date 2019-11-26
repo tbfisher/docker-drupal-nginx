@@ -19,6 +19,7 @@ RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear          \
+        php7.1-bcmath     \
         php7.1-cli        \
         php7.1-common     \
         php7.1-curl       \
@@ -41,6 +42,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         php7.1-tidy       \
         php7.1-xdebug     \
         php7.1-xml        \
+        php7.1-bz2        \
         php7.1-zip
         # php7.1-xhprof
 
@@ -78,7 +80,7 @@ RUN apt-get update && \
 
 # Drush, console
 RUN cd /usr/local/bin/ && \
-    curl http://files.drush.org/drush.phar -L -o drush && \
+    curl https://github.com/drush-ops/drush/releases/download/8.1.17/drush.phar -L -o drush && \
     chmod +x drush
 COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
 RUN chmod +x /usr/local/bin/drush-remote

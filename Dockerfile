@@ -84,12 +84,19 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         ssmtp
 
-# Drush, console
-RUN cd /usr/local/bin/ && \
-    curl http://files.drush.org/drush.phar -L -o drush && \
-    chmod +x drush
-COPY ./conf/drush/drush-remote.sh /usr/local/bin/drush-remote
-RUN chmod +x /usr/local/bin/drush-remote
+# Install composer.
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php -r "copy('https://composer.github.io/installer.sig', 'composer-setup.sig');" && \
+    php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('composer-setup.sig'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/bin/composer
+
+# Install drush globally.
+RUN composer global require drush/drush:^8 && \
+    ln -s $HOME/.composer/vendor/bin/drush /usr/local/bin/drush
+
+# Install Drupal Console.
 RUN cd /usr/local/bin/ && \
     curl https://drupalconsole.com/installer -L -o drupal && \
     chmod +x drupal

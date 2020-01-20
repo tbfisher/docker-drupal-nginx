@@ -125,7 +125,7 @@ RUN phpenmod \
     soap
     # xhprof
 
-RUN pecl install mcrypt-1.0.1 -y
+RUN pecl install mcrypt-1.0.2 -y
 RUN echo extension=mcrypt.so >> /etc/php/7.3/fpm/php.ini
 RUN echo extension=mcrypt.so >> /etc/php/7.3/cli/php.ini
 

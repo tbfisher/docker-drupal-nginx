@@ -19,38 +19,38 @@ RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear          \
-        php7.3-bcmath     \
-        php7.3-cli        \
-        php7.3-common     \
-        php7.3-curl       \
-        php7.3-dev        \
-        php7.3-fpm        \
-        php7.3-gd         \
-        php7.3-imagick    \
-        php7.3-imap       \
-        php7.3-intl       \
-        php7.3-json       \
-        php7.3-ldap       \
-        php7.3-mbstring   \
-        php7.3-memcache   \
-        php7.3-mysql      \
-        php7.3-opcache    \
-        php7.3-readline   \
-        # php7.3-redis      \
-        php7.3-sqlite     \
-        php7.3-tidy       \
-        php7.3-xdebug     \
-        php7.3-xml        \
-        php7.3-zip        \
-        php7.3-soap       \
+        php7.4-bcmath     \
+        php7.4-cli        \
+        php7.4-common     \
+        php7.4-curl       \
+        php7.4-dev        \
+        php7.4-fpm        \
+        php7.4-gd         \
+        php7.4-imagick    \
+        php7.4-imap       \
+        php7.4-intl       \
+        php7.4-json       \
+        php7.4-ldap       \
+        php7.4-mbstring   \
+        php7.4-memcache   \
+        php7.4-mysql      \
+        php7.4-opcache    \
+        php7.4-readline   \
+        # php7.4-redis      \
+        php7.4-sqlite     \
+        php7.4-tidy       \
+        php7.4-xdebug     \
+        php7.4-xml        \
+        php7.4-zip        \
+        php7.4-soap       \
         gcc               \
         make              \
         autoconf          \
         libc-dev          \
         pkg-config        \
-        php7.3-dev        \
+        php7.4-dev        \
         libmcrypt-dev
-        # php7.3-xhprof
+        # php7.4-xhprof
 
 # phpredis
 ENV PHPREDIS_VERSION='3.0.0'
@@ -64,7 +64,7 @@ RUN cd /usr/local/src/phpredis && \
     make clean  && \
     make        && \
     make install
-COPY ./conf/php/mods-available/redis.ini /etc/php/7.3/mods-available/redis.ini
+COPY ./conf/php/mods-available/redis.ini /etc/php/7.4/mods-available/redis.ini
 
 # NGNIX
 RUN apt-get update && \
@@ -110,24 +110,24 @@ RUN apt-get update && \
 
 # Configure PHP
 RUN mkdir /run/php
-RUN cp /etc/php/7.3/fpm/php.ini /etc/php/7.3/fpm/php.ini.bak
-COPY ./conf/php/fpm/php.ini-development /etc/php/7.3/fpm/php.ini
-# COPY /conf/php/fpm/php.ini-production /etc/php/7.3/fpm/php.ini
-RUN cp /etc/php/7.3/fpm/pool.d/www.conf /etc/php/7.3/fpm/pool.d/www.conf.bak
-COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.3/fpm/pool.d/www.conf
-RUN cp /etc/php/7.3/cli/php.ini /etc/php/7.3/cli/php.ini.bak
-COPY /conf/php/cli/php.ini-development /etc/php/7.3/cli/php.ini
-# COPY /conf/php/cli/php.ini-production /etc/php/7.3/cli/php.ini
+RUN cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.bak
+COPY ./conf/php/fpm/php.ini-development /etc/php/7.4/fpm/php.ini
+# COPY /conf/php/fpm/php.ini-production /etc/php/7.4/fpm/php.ini
+RUN cp /etc/php/7.4/fpm/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf.bak
+COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+RUN cp /etc/php/7.4/cli/php.ini /etc/php/7.4/cli/php.ini.bak
+COPY /conf/php/cli/php.ini-development /etc/php/7.4/cli/php.ini
+# COPY /conf/php/cli/php.ini-production /etc/php/7.4/cli/php.ini
 # Prevent php warnings
-RUN sed -ir 's@^#@//@' /etc/php/7.3/mods-available/*
+RUN sed -ir 's@^#@//@' /etc/php/7.4/mods-available/*
 RUN phpenmod \
     redis  \
     soap
     # xhprof
 
 RUN pecl install mcrypt-1.0.2 -y
-RUN echo extension=mcrypt.so >> /etc/php/7.3/fpm/php.ini
-RUN echo extension=mcrypt.so >> /etc/php/7.3/cli/php.ini
+RUN echo extension=mcrypt.so >> /etc/php/7.4/fpm/php.ini
+RUN echo extension=mcrypt.so >> /etc/php/7.4/cli/php.ini
 
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak

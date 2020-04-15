@@ -125,10 +125,6 @@ RUN phpenmod \
     soap
     # xhprof
 
-RUN pecl install mcrypt-1.0.2 -y
-RUN echo extension=mcrypt.so >> /etc/php/7.4/fpm/php.ini
-RUN echo extension=mcrypt.so >> /etc/php/7.4/cli/php.ini
-
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 COPY ./conf/nginx/default-development /etc/nginx/sites-available/default

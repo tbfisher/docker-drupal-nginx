@@ -97,6 +97,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/bin/composer
 
+# Install terminus.
+RUN mkdir $HOME/terminus && cd $HOME/terminus && \
+    curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install && \
+    ln -s $HOME/terminus/vendor/bin/terminus /usr/bin/terminus
+
 # Install drush globally.
 RUN composer global require drush/drush:^8 && \
     ln -s $HOME/.composer/vendor/bin/drush /usr/local/bin/drush

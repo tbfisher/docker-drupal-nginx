@@ -77,6 +77,11 @@ RUN apt-get update && \
         openssh-server
 RUN dpkg-reconfigure openssh-server
 
+# Install Node 12.
+RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates && \
+    curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt -y install nodejs gcc g++ make
+
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
 # which is standard configuration for a mailhog/mailhog image with hostname mail.

@@ -1,6 +1,6 @@
 # http://phusion.github.io/baseimage-docker/
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-FROM phusion/baseimage:0.9.19
+FROM phusion/baseimage:focal-1.0.0
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 

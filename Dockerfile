@@ -13,7 +13,9 @@ CMD ["/sbin/my_init"]
 
 # Upgrade OS
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
-RUN apt-get upgrade ca-certificates -y
+RUN apt-get upgrade
+
+# PHP
 RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \

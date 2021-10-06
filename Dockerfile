@@ -117,7 +117,7 @@ RUN mkdir $HOME/terminus && cd $HOME/terminus && \
 
 # Install drush globally.
 RUN composer global require drush/drush:^8 && \
-    ln -s $HOME/.composer/vendor/bin/drush /usr/local/bin/drush
+    ln -s $HOME/.config/composer/vendor/bin/drush /usr/local/bin/drush
 
 # Install Drupal Console.
 RUN cd /usr/local/bin/ && \

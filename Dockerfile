@@ -7,6 +7,9 @@ MAINTAINER Brian Fisher <tbfisher@gmail.com>
 RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
+ENV NVM_VERSION v0.38.0
+ENV NODE_VERSION 12
+ENV NVM_DIR /usr/local/nvm
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -77,10 +80,20 @@ RUN apt-get update && \
         openssh-server
 RUN dpkg-reconfigure openssh-server
 
+# Install utilitarian packages.
+RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates gcc g++ make
+
+# Install nvm.
+RUN mkdir $NVM_DIR
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
 # Install Node 12.
-RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates && \
-    curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt -y install nodejs gcc g++ make
+RUN echo "source $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default" | bash
 
 # sSMTP
 # note php is configured to use ssmtp, which is configured to send to mail:1025,
@@ -104,7 +117,7 @@ RUN mkdir $HOME/terminus && cd $HOME/terminus && \
 
 # Install drush globally.
 RUN composer global require drush/drush:^8 && \
-    ln -s $HOME/.composer/vendor/bin/drush /usr/local/bin/drush
+    ln -s $HOME/.config/composer/vendor/bin/drush /usr/local/bin/drush
 
 # Install Drupal Console.
 RUN cd /usr/local/bin/ && \

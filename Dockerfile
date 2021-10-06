@@ -115,10 +115,9 @@ RUN mkdir $HOME/terminus && cd $HOME/terminus && \
     curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install && \
     ln -s $HOME/terminus/vendor/bin/terminus /usr/bin/terminus
 
-# Install drush launcher.
-RUN curl -OL https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar && \
-    chmod +x drush.phar && \
-    mv drush.phar /usr/local/bin/drush
+# Install drush globally.
+RUN composer global require drush/drush:^8 && \
+    ln -s $HOME/.composer/vendor/bin/drush /usr/local/bin/drush
 
 # Install Drupal Console.
 RUN cd /usr/local/bin/ && \

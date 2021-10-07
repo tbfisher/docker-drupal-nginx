@@ -70,4 +70,26 @@ volumes:
     driver: local
 ```
 
+For our node installation we are using NVM, to be able to use node properly you should execute the following commands:
+```bash
+source /root/.nvm/nvm.sh
+```
+```bash
+echo 'export NVM_DIR="/root/.nvm/"' >> $BASH_ENV
+```
+```bash
+echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+```
+
+As an example, if you use CircleCI, you could load nvm like this:
+```yaml
+- run:
+    name: Load NVM and nodejs.
+    command: |
+      source /root/.nvm/nvm.sh
+      echo 'export NVM_DIR="/root/.nvm/"' >> $BASH_ENV
+      echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+```
+
+
 Note PHP in this build is configured to send mail to a mailhog container, which captures any outgoing mail and exposes a UI on port 8025.

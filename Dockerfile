@@ -7,8 +7,8 @@ MAINTAINER Brian Fisher <tbfisher@gmail.com>
 RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
-ENV NVM_VERSION v0.38.0
-ENV NODE_VERSION 12
+ENV NVM_VERSION v0.39.1
+ENV NODE_VERSION 16.13.0
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -21,38 +21,38 @@ RUN add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         php-pear          \
-        php7.4-bcmath     \
-        php7.4-cli        \
-        php7.4-common     \
-        php7.4-curl       \
-        php7.4-dev        \
-        php7.4-fpm        \
-        php7.4-gd         \
-        php7.4-imagick    \
-        php7.4-imap       \
-        php7.4-intl       \
-        php7.4-json       \
-        php7.4-ldap       \
-        php7.4-mbstring   \
-        php7.4-memcache   \
-        php7.4-mysql      \
-        php7.4-opcache    \
-        php7.4-readline   \
-        # php7.4-redis      \
-        php7.4-sqlite     \
-        php7.4-tidy       \
-        php7.4-xdebug     \
-        php7.4-xml        \
-        php7.4-zip        \
-        php7.4-soap       \
+        php8.1-bcmath     \
+        php8.1-cli        \
+        php8.1-common     \
+        php8.1-curl       \
+        php8.1-dev        \
+        php8.1-fpm        \
+        php8.1-gd         \
+        php8.1-imagick    \
+        php8.1-imap       \
+        php8.1-intl       \
+        php8.1-json       \
+        php8.1-ldap       \
+        php8.1-mbstring   \
+        php8.1-memcache   \
+        php8.1-mysql      \
+        php8.1-opcache    \
+        php8.1-readline   \
+        # php8.1-redis      \
+        php8.1-sqlite     \
+        php8.1-tidy       \
+        php8.1-xdebug     \
+        php8.1-xml        \
+        php8.1-zip        \
+        php8.1-soap       \
         gcc               \
         make              \
         autoconf          \
         libc-dev          \
         pkg-config        \
-        php7.4-dev        \
+        php8.1-dev        \
         libmcrypt-dev
-        # php7.4-xhprof
+        # php8.1-xhprof
 
 # phpredis
 ENV PHPREDIS_VERSION='3.0.0'
@@ -66,7 +66,7 @@ RUN cd /usr/local/src/phpredis && \
     make clean  && \
     make        && \
     make install
-COPY ./conf/php/mods-available/redis.ini /etc/php/7.4/mods-available/redis.ini
+COPY ./conf/php/mods-available/redis.ini /etc/php/8.1/mods-available/redis.ini
 
 # NGNIX
 RUN apt-get update && \
@@ -130,24 +130,24 @@ RUN apt-get update && \
 
 # Configure PHP
 RUN mkdir /run/php
-RUN cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.bak
-COPY ./conf/php/fpm/php.ini-development /etc/php/7.4/fpm/php.ini
-# COPY /conf/php/fpm/php.ini-production /etc/php/7.4/fpm/php.ini
-RUN cp /etc/php/7.4/fpm/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf.bak
-COPY /conf/php/fpm/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf
-RUN cp /etc/php/7.4/cli/php.ini /etc/php/7.4/cli/php.ini.bak
-COPY /conf/php/cli/php.ini-development /etc/php/7.4/cli/php.ini
-# COPY /conf/php/cli/php.ini-production /etc/php/7.4/cli/php.ini
+RUN cp /etc/php/8.1/fpm/php.ini /etc/php/8.1/fpm/php.ini.bak
+COPY ./conf/php/fpm/php.ini-development /etc/php/8.1/fpm/php.ini
+# COPY /conf/php/fpm/php.ini-production /etc/php/8.1/fpm/php.ini
+RUN cp /etc/php/8.1/fpm/pool.d/www.conf /etc/php/8.1/fpm/pool.d/www.conf.bak
+COPY /conf/php/fpm/pool.d/www.conf /etc/php/8.1/fpm/pool.d/www.conf
+RUN cp /etc/php/8.1/cli/php.ini /etc/php/8.1/cli/php.ini.bak
+COPY /conf/php/cli/php.ini-development /etc/php/8.1/cli/php.ini
+# COPY /conf/php/cli/php.ini-production /etc/php/8.1/cli/php.ini
 # Prevent php warnings
-RUN sed -ir 's@^#@//@' /etc/php/7.4/mods-available/*
+RUN sed -ir 's@^#@//@' /etc/php/8.1/mods-available/*
 RUN phpenmod \
     redis  \
     soap
     # xhprof
 
 RUN pecl install mcrypt-1.0.4 -y
-RUN echo extension=mcrypt.so >> /etc/php/7.4/fpm/php.ini
-RUN echo extension=mcrypt.so >> /etc/php/7.4/cli/php.ini
+RUN echo extension=mcrypt.so >> /etc/php/8.1/fpm/php.ini
+RUN echo extension=mcrypt.so >> /etc/php/8.1/cli/php.ini
 
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak

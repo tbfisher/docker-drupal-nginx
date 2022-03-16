@@ -148,9 +148,9 @@ RUN phpenmod \
     soap
     # xhprof
 
-RUN pecl install mcrypt-1.0.4 -y
-RUN echo extension=mcrypt.so >> /etc/php/8.1/fpm/php.ini
-RUN echo extension=mcrypt.so >> /etc/php/8.1/cli/php.ini
+# RUN pecl install mcrypt-1.0.4 -y
+# RUN echo extension=mcrypt.so >> /etc/php/8.1/fpm/php.ini
+# RUN echo extension=mcrypt.so >> /etc/php/8.1/cli/php.ini
 
 # Configure NGINX
 RUN cp -r /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak

@@ -8,7 +8,9 @@ RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 ENV NVM_VERSION v0.39.1
-ENV NODE_VERSION 16.13.0
+ENV NODE_VERSION 16.14.0
+ENV TERMINUS_VERSION 3.0.6
+ENV DRUSH_VERSION ^11
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -31,7 +33,6 @@ RUN add-apt-repository ppa:ondrej/php && \
         php8.1-imagick    \
         php8.1-imap       \
         php8.1-intl       \
-        php8.1-json       \
         php8.1-ldap       \
         php8.1-mbstring   \
         php8.1-memcache   \
@@ -55,7 +56,7 @@ RUN add-apt-repository ppa:ondrej/php && \
         # php8.1-xhprof
 
 # phpredis
-ENV PHPREDIS_VERSION='3.0.0'
+ENV PHPREDIS_VERSION='5.3.7'
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install --yes \
         git
@@ -109,11 +110,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 # Install terminus.
 RUN mkdir $HOME/terminus && cd $HOME/terminus && \
-    curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install && \
-    ln -s $HOME/terminus/vendor/bin/terminus /usr/bin/terminus
+    curl -L https://github.com/pantheon-systems/terminus/releases/download/$TERMINUS_VERSION/terminus.phar --output terminus && \
+    chmod +x terminus && \
+    ./terminus self:update && \
+    ln -s $HOME/terminus/terminus /usr/bin/terminus
 
 # Install drush globally.
-RUN composer global require drush/drush:^8 && \
+RUN composer global require drush/drush:$DRUSH_VERSION && \
     ln -s $HOME/.config/composer/vendor/bin/drush /usr/local/bin/drush
 
 # Install Drupal Console.
